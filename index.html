@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>溫馨小屋 · Bot 狀態</title>
+  <link rel="stylesheet" href="css/cabin.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23E8A87C'/%3E%3Ccircle cx='24' cy='28' r='3' fill='%23332'/%3E%3Ccircle cx='40' cy='28' r='3' fill='%23332'/%3E%3Cpath d='M24 40c4 4 12 4 16 0' stroke='%23332' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🏡</span>
+        <div>
+          <h1>溫馨小屋 · Bot 狀態</h1>
+          <p class="subtitle" id="conn-label">等待主題…（網址加 #<span class="mono">TOPIC</span>）</p>
+        </div>
+      </div>
+      <div class="usage-chip" id="usage-chip" hidden>
+        <div class="usage-bar"><div class="usage-fill" id="usage-fill"></div></div>
+        <span id="usage-text">用量 —</span>
+      </div>
+    </header>
+
+    <main class="stage">
+      <div class="cabin" id="cabin" aria-label="溫馨小屋內景">
+        <!-- painted room layers -->
+        <div class="wall"></div>
+        <div class="floor-planks"></div>
+        <div class="window-left" title="窗外">
+          <div class="sky"></div>
+          <div class="city-glow"></div>
+          <div class="curtain left"></div>
+          <div class="curtain right"></div>
+        </div>
+        <div class="window-right">
+          <div class="sky"></div>
+          <div class="city-glow"></div>
+        </div>
+        <div class="fairy-lights" aria-hidden="true"></div>
+        <div class="fireplace">
+          <div class="mantel"></div>
+          <div class="hearth">
+            <div class="fire" id="fire"></div>
+          </div>
+          <div class="glow"></div>
+        </div>
+        <div class="rug"></div>
+        <div class="sofa" title="沙發角"></div>
+        <div class="desk" title="書桌角">
+          <div class="lamp"></div>
+        </div>
+        <div class="plant plant-a" aria-hidden="true"></div>
+        <div class="plant plant-b" aria-hidden="true"></div>
+        <div class="table" title="小圓桌"></div>
+
+        <!-- corner zones for bots -->
+        <section class="corner" data-corner="sofa" id="corner-sofa">
+          <span class="corner-label">沙發</span>
+          <div class="bots" id="bots-sofa"></div>
+        </section>
+        <section class="corner" data-corner="desk" id="corner-desk">
+          <span class="corner-label">書桌</span>
+          <div class="bots" id="bots-desk"></div>
+        </section>
+        <section class="corner" data-corner="window" id="corner-window">
+          <span class="corner-label">窗邊</span>
+          <div class="bots" id="bots-window"></div>
+        </section>
+        <section class="corner" data-corner="fireplace" id="corner-fireplace">
+          <span class="corner-label">壁爐</span>
+          <div class="bots" id="bots-fireplace"></div>
+        </section>
+      </div>
+
+      <aside class="panel" id="panel">
+        <div class="panel-card" id="selected-card">
+          <p class="panel-hint">點選小屋裡的 bot 看詳情</p>
+        </div>
+        <div class="panel-card summary-card">
+          <h2>小屋概況</h2>
+          <ul class="counts" id="counts">
+            <li><i class="dot working"></i> 忙碌 <b id="c-working">0</b></li>
+            <li><i class="dot idle"></i> 休息 <b id="c-idle">0</b></li>
+            <li><i class="dot waiting_user"></i> 等你 <b id="c-waiting_user">0</b></li>
+            <li><i class="dot error"></i> 出錯 <b id="c-error">0</b></li>
+            <li><i class="dot done"></i> 完成 <b id="c-done">0</b></li>
+          </ul>
+          <p class="clock" id="clock"></p>
+        </div>
+        <div class="panel-card feed-card">
+          <h2>最近動態</h2>
+          <ol class="feed" id="feed"></ol>
+        </div>
+      </aside>
+    </main>
+
+    <div id="gate" class="gate">
+      <div class="gate-card">
+        <h2>🏡 打開溫馨小屋</h2>
+        <p>把 bot 頻道主題放在網址的 <code>#</code> 後面（唔會送到 GitHub）：</p>
+        <p class="mono example">…/bot-cabin/#your-topic-here</p>
+        <p class="muted">可選：<code>#topic&amp;ntfy=https://ntfy.example</code> 指定自架信箱。</p>
+        <p class="muted">協議同 Codila GrokBot dashboard；呢度係單一溫馨小屋，唔係辦公樓。</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
