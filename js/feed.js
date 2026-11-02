@@ -56,9 +56,12 @@ export async function connectFeed({ topic, servers }, onState) {
   lines = cached(cacheKey);
   await Promise.all(sources.map(async (s) => {
     try {
-      const text = await (await fetch(`${s.base}/json?poll=1&since=12h`, { cache: 'no-store' })).text();
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const text = await (await fetch(`${s.base}/json?poll=1&since=12h`, { cache: 'no-store', signal: ctrl.signal })).text();
+      clearTimeout(timer);
       for (const row of text.split('\n')) if (row) keep(s, JSON.parse(row));
-    } catch { /* offline */ }
+    } catch { /* offline / slow mailbox: other sources + cache still paint the cabin */ }
   }));
   lines = lines.filter(fresh).sort((a, b) => a.time - b.time);
   for (const l of lines) ingest(l);
@@ -126,7 +129,10 @@ export async function connectFeed({ topic, servers }, onState) {
   }
   async function catchUp(s) {
     try {
-      const text = await (await fetch(`${s.base}/json?poll=1&since=${s.lastId ?? '12h'}`, { cache: 'no-store' })).text();
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const text = await (await fetch(`${s.base}/json?poll=1&since=${s.lastId ?? '12h'}`, { cache: 'no-store', signal: ctrl.signal })).text();
+      clearTimeout(timer);
       let changed = false;
       for (const row of text.split('\n')) if (row && take(s, JSON.parse(row))) changed = true;
       if (changed) publish();
